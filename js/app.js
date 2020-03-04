@@ -49,47 +49,49 @@ class Navbar extends React.Component {
     };
   }
   componentDidUpdate(prevProps, prevState) {
-    //
+    if (prevProps != this.props) {
+      this.setState({
+        loginToggle: this.props.loginToggle,
+        loginStatus: this.props.loginStatus
+      });
+    }
   }
 
-  toggleNav = () => {
-    this.setState({ loginToggle: !this.state.loginToggle });
-  };
-
   redirHome() {
-    location.href = "/";
+    location.href = "";
   }
 
   render() {
     return (
-      <nav className="">
-        {/* navbar navbar-expand-sm bg-dark fixed-top flex-column flex-md-row */}
-        <div className="">
-          {/* navbar-nav mr-auto */}
-          <a className="" href="">
-            {/* nav-link */}
-            <div id="header_logo" onClick={this.redirHome}>
-              <p>
-                <img src="/res/favicon.ico" width="30" height="30" alt="" />
-                AMIAB.LY
-              </p>
-            </div>
-          </a>
-        </div>
-        <ul className="">
-          {/* navbar-nav mr-right */}
-          <li className="">
-            {/* nav-item */}
-            {this.state.loginStatus ? (
-              <UserNav />
-            ) : this.state.loginToggle ? (
-              <LoginDroplet toggleNav={this.toggleNav} />
-            ) : (
-              <LoginRegButton toggleNav={this.toggleNav} />
-            )}
-          </li>
-        </ul>
-      </nav>
+      <div className="navbar-fixed">
+        <nav>
+          {/* navbar navbar-expand-sm bg-dark fixed-top flex-column flex-md-row */}
+          <div className="nav-wrapper">
+            {/* navbar-nav mr-auto */}
+            <a className="left" href="" onClick={this.redirHome}>
+              <img
+                src="/res/brand-logo.png"
+                width="100%"
+                height="100%"
+                alt=""
+              />
+            </a>
+            <ul className="right">
+              {/* navbar-nav mr-right */}
+              <li>
+                {/* nav-item */}
+                {this.state.loginStatus ? (
+                  <UserNav />
+                ) : this.state.loginToggle ? (
+                  <LoginDroplet toggieNavLogin={this.props.toggieNavLogin} />
+                ) : (
+                  <LoginRegButton toggieNavLogin={this.props.toggieNavLogin} />
+                )}
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
     );
   }
 }
@@ -111,36 +113,47 @@ class LoginDroplet extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <form className="form-inline" method="post" acceptCharset="UTF-8">
-          <input
-            className="form-control login"
-            type="text"
-            name="username"
-            defaultValue=""
-            onChange={this.handleChange}
-            placeholder="Username.."
-          />
-          <input
-            className="form-control login"
-            type="password"
-            name="password"
-            defaultValue=""
-            onChange={this.handleChange}
-            placeholder="Password.."
-          />
-          <br />
-          <input
-            className="btn btn-primary"
-            type="submit"
-            name="submit"
-            value="Login"
-          />
-          <input
-            className="btn btn-default"
-            name="cancel"
-            value="Back"
-            onClick={this.props.toggleNav}
-          />
+        <form className="login card " method="post" acceptCharset="UTF-8">
+          <div className="container">
+            <div className="input-field">
+              <input
+                className=""
+                // form-control login
+                type="text"
+                id="username-input"
+                name="username"
+                onChange={this.handleChange}
+              />
+              <label htmlFor="username-input">Username</label>
+            </div>
+            <div className="input-field">
+              <input
+                className=""
+                // form-control login
+                type="password"
+                id="password-input"
+                name="password"
+                defaultValue=""
+                onChange={this.handleChange}
+              />
+              <label htmlFor="password-input">Password</label>
+            </div>
+            <input
+              className="btn"
+              // btn btn-primary
+              type="submit"
+              name="submit"
+              value="Login"
+            />
+            <input
+              className="btn"
+              // btn btn-default
+              type="button"
+              name="cancel"
+              value="Back"
+              onClick={this.props.toggieNavLogin}
+            />
+          </div>
         </form>
       </React.Fragment>
     );
@@ -172,14 +185,16 @@ class LoginRegButton extends React.Component {
     return (
       <React.Fragment>
         <button
-          className={"btn btn-primary"}
-          onClick={this.props.toggleNav}
+          className="btn-large"
+          // btn btn-primary
+          onClick={this.props.toggieNavLogin}
           type="button"
         >
           Sign in
         </button>
         <button
-          className={"btn btn-warning"}
+          className="btn-large"
+          // btn btn-warning
           onClick={this.props.switchToRegView}
           type="button"
         >
@@ -221,7 +236,8 @@ class MidSection extends React.Component {
           message={this.state.message}
           editTitle={this.state.editTitle}
         />
-        <textarea className="form-control bigfill" id="theMessage"></textarea>
+        <textarea className="bigfill" id="theMessage"></textarea>
+        {/* form-control  */}
       </form>
     );
   }
@@ -287,7 +303,8 @@ class TitleLabelBox extends React.Component {
   renderBox = () => {
     return (
       <input
-        class="form-control form-control-lg"
+        className=""
+        // form-control form-control-lg
         type="text"
         value={this.state.message.title}
         onChange={this.handleChange}
@@ -329,7 +346,8 @@ class TitleEditButton extends React.Component {
   render() {
     return (
       <button
-        className={this.state.editTitle ? "btn btn-primary" : "btn btn-info"}
+        className={this.state.editTitle ? "" : ""}
+        // "btn btn-primary" : "btn btn-info"
         onClick={this.props.handleEdit}
         type="button"
       >
@@ -382,6 +400,10 @@ class App extends React.Component {
     });
   };
 
+  toggieNavLogin = () => {
+    this.setState({ loginToggle: !this.state.loginToggle });
+  };
+
   render() {
     // let navheight = document.querySelector("nav").offsetHeight;
     return (
@@ -392,18 +414,23 @@ class App extends React.Component {
             loginToggle={this.state.loginToggle}
             currentPage={this.state.currentPage}
             currentUser={this.state.currentUser}
+            toggieNavLogin={this.toggieNavLogin}
           />
         </header>
         {/* <div style={{ height: navheight + "px" }}></div> */}
-        <div className="jumbotron d-flex align-items-center">
-          <div className="container-fluid h-100">
-            <div className="row p-2 h-100">
-              <div className="col-md-12 d-flex align-items-center justify-content-center">
-                <MidSection message={this.state.message} />
-              </div>
-            </div>
-          </div>
+        <div id="main-frame" className="card-panel">
+          {/* jumbotron d-flex align-items-center */}
+          {/* <div className=""> */}
+          {/* container-fluid h-100 */}
+          {/* <div className=""> */}
+          {/* row p-2 h-100 */}
+          {/* <div className=""> */}
+          {/* col-md-12 d-flex align-items-center justify-content-center */}
+          <MidSection message={this.state.message} />
         </div>
+        {/* </div> */}
+        {/* </div> */}
+        {/* </div> */}
       </React.Fragment>
     );
   }
