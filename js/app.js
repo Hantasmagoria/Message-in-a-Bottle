@@ -62,9 +62,12 @@ class Navbar extends React.Component {
 
   render() {
     return (
-      <nav className="navbar navbar-expand-sm bg-dark fixed-top flex-column flex-md-row">
-        <div className="navbar-nav mr-auto">
-          <a className="nav-link" href="">
+      <nav className="">
+        {/* navbar navbar-expand-sm bg-dark fixed-top flex-column flex-md-row */}
+        <div className="">
+          {/* navbar-nav mr-auto */}
+          <a className="" href="">
+            {/* nav-link */}
             <div id="header_logo" onClick={this.redirHome}>
               <p>
                 <img src="/res/favicon.ico" width="30" height="30" alt="" />
@@ -73,8 +76,10 @@ class Navbar extends React.Component {
             </div>
           </a>
         </div>
-        <ul className="navbar-nav mr-right">
-          <li className="nav-item">
+        <ul className="">
+          {/* navbar-nav mr-right */}
+          <li className="">
+            {/* nav-item */}
             {this.state.loginStatus ? (
               <UserNav />
             ) : this.state.loginToggle ? (
