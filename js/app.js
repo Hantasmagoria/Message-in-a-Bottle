@@ -97,21 +97,30 @@ class LoginDroplet extends React.Component {
     };
   }
 
+  handleChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
+
   render() {
     return (
       <React.Fragment>
-        <form className="form-horizontal" method="post" acceptCharset="UTF-8">
+        <form className="form-inline" method="post" acceptCharset="UTF-8">
           <input
             className="form-control login"
             type="text"
             name="username"
+            defaultValue=""
+            onChange={this.handleChange}
             placeholder="Username.."
           />
-          <br />
           <input
             className="form-control login"
             type="password"
             name="password"
+            defaultValue=""
+            onChange={this.handleChange}
             placeholder="Password.."
           />
           <br />
@@ -162,7 +171,7 @@ class LoginRegButton extends React.Component {
           onClick={this.props.toggleNav}
           type="button"
         >
-          Login
+          Sign in
         </button>
         <button
           className={"btn btn-warning"}
@@ -192,7 +201,8 @@ class MidSection extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      //
+      message: this.props.message,
+      editTitle: false
     };
   }
   componentDidUpdate(prevProps, prevState) {
@@ -202,8 +212,124 @@ class MidSection extends React.Component {
   render() {
     return (
       <form className="castForm" method="post">
-        <textarea className="form-control bigfill"></textarea>
+        <TitleArea
+          message={this.state.message}
+          editTitle={this.state.editTitle}
+        />
+        <textarea className="form-control bigfill" id="theMessage"></textarea>
       </form>
+    );
+  }
+}
+
+class TitleArea extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      message: this.props.message,
+      editTitle: this.props.editTitle
+    };
+  }
+  componentDidUpdate(prevProps, prevState) {
+    //
+  }
+
+  handleEdit = () => {
+    this.setState({
+      editTitle: !this.state.editTitle
+    });
+  };
+
+  render() {
+    return (
+      <React.Fragment>
+        <TitleLabelBox
+          message={this.state.message}
+          editTitle={this.state.editTitle}
+        />
+        <TitleEditButton
+          editTitle={this.state.editTitle}
+          handleEdit={this.handleEdit}
+        />
+      </React.Fragment>
+    );
+  }
+}
+
+class TitleLabelBox extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      message: this.props.message,
+      editTitle: this.props.editTitle
+    };
+  }
+
+  handleChange = e => {
+    this.setState({
+      message: e.target.value
+    });
+  };
+
+  renderLabel = () => {
+    return (
+      <label htmlFor="theMessage">
+        {this.state.message.title ? this.state.message.title : "Title"}
+      </label>
+    );
+  };
+
+  renderBox = () => {
+    return (
+      <input
+        class="form-control form-control-lg"
+        type="text"
+        value={this.state.message.title}
+        onChange={this.handleChange}
+      />
+    );
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps != this.props) {
+      this.setState({
+        message: this.props.message,
+        editTitle: this.props.editTitle
+      });
+    }
+  }
+
+  render() {
+    return this.state.editTitle ? this.renderBox() : this.renderLabel();
+  }
+}
+
+class TitleEditButton extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      message: this.props.message,
+      editTitle: this.props.editTitle
+    };
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps != this.props) {
+      this.setState({
+        message: this.props.message,
+        editTitle: this.props.editTitle
+      });
+    }
+  }
+
+  render() {
+    return (
+      <button
+        className={this.state.editTitle ? "btn btn-primary" : "btn btn-info"}
+        onClick={this.props.handleEdit}
+        type="button"
+      >
+        {this.state.editTitle ? "Confirm" : "Edit"}
+      </button>
     );
   }
 }
@@ -268,7 +394,7 @@ class App extends React.Component {
           <div className="container-fluid h-100">
             <div className="row p-2 h-100">
               <div className="col-md-12 d-flex align-items-center justify-content-center">
-                <MidSection />
+                <MidSection message={this.state.message} />
               </div>
             </div>
           </div>
