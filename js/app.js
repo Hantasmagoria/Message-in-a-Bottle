@@ -317,7 +317,6 @@ class MidSection extends React.Component {
   }
 
   renderDash() {
-    // TODO: fix dashboard
     return (
       <div className="section">
         <div className="row">
@@ -441,7 +440,6 @@ class TitleLabelBox extends React.Component {
   }
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.message != this.props.message) {
-      // console.log("update");
 
       this.setState({
         message: this.props.message
@@ -557,11 +555,7 @@ class TextArea extends React.Component {
       .then(res => {
         return res.json();
       })
-      .then(resJson => {
-        console.log(resJson);
-      });
 
-    // TODO: find out of the resJson can be flushed to localhost (look out for console log)
     if (user) {
       await fetch("https://amiablydb.herokuapp.com/users/", {
         method: "PUT",
@@ -574,9 +568,6 @@ class TextArea extends React.Component {
         .then(res => {
           return res.json();
         })
-        .then(resJson => {
-          console.log(resJson);
-        });
     }
   };
 
